@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luner | Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base Theme Colors */
+        :root {
+            --bg-deep: #05000a;
+            --purple-glow: #4b0082;
+            --text-main: #e0d0ff;
+            --accent: #be44cd;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            user-select: none;
+        }
+
+        body.text-selectable * {
+            user-select: text;
+        }
+
+        /* Vignette Overlay */
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+            background: radial-gradient(
+                ellipse at center,
+                rgba(0, 0, 0, 0) 55%,
+                rgba(0, 0, 0, 0.33) 100%
+            );
+        }
+
+        header {
+            padding: 80px 20px 40px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--accent);
+            font-size: 4rem;
+            letter-spacing: 12px;
+            margin-bottom: 15px;
+            text-shadow: 0 0 30px rgba(190, 68, 205, 0.6),
+                         0 0 60px rgba(190, 68, 205, 0.3);
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            font-size: 1.1rem;
+            opacity: 0.9;
+            letter-spacing: 2px;
+            font-weight: 400;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .role-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .role-text {
+            text-align: center;
+        }
+
+        .separator {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            color: var(--text-main);
+            margin-top: 8px;
+        }
+
+        .icon-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        /* === General Icon Styling === */
+        .software-icon {
+            width: 32px;
+            height: 32px;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+
+        /* === ADOBE ICONS (Inline SVG) Styling === */
+        /* Forces the box to be Magenta */
+        .software-icon rect {
+            fill: #be44cd; 
+        }
+        
+        /* Forces the text to be Black */
+        .software-icon text {
+            fill: #05000a; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: 900;
+        }
+
+        /* === BLENDER ICON (IMG Tag) Styling === */
+        /* Filter to turn the entire image Magenta (#be44cd) */
+        .blender-img {
+            filter: brightness(0) saturate(100%) invert(33%) sepia(58%) saturate(2370%) hue-rotate(263deg) brightness(91%) contrast(93%);
+        }
+
+        .software-icon:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+        
+        /* Specific Hover Glows */
+        .software-icon:not(.blender-img):hover {
+             filter: drop-shadow(0 0 8px rgba(190, 68, 205, 0.6));
+        }
+
+        .blender-img:hover {
+            /* Need to re-apply the color filter AND add the drop shadow */
+            filter: brightness(0) saturate(100%) invert(33%) sepia(58%) saturate(2370%) hue-rotate(263deg) brightness(91%) contrast(93%) drop-shadow(0 0 8px rgba(190, 68, 205, 0.6));
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            padding: 40px;
+            max-width: 1100px;
+            width: 100%;
+            z-index: 1;
+            margin-bottom: 60px;
+        }
+
+        /* Video Card Styling */
+        .video-card {
+            background: rgba(26, 0, 51, 0.4);
+            border: 1px solid rgba(190, 68, 205, 0.2);
+            padding: 20px;
+            border-radius: 20px; 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .video-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(75, 0, 130, 0.5);
+        }
+
+        /* YouTube Embed Styling */
+        .video-wrapper {
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px; 
+            aspect-ratio: 16 / 9;
+            background: #000;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        h3 {
+            margin-top: 15px;
+            margin-bottom: 8px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 1.3rem;
+            letter-spacing: 0.5px;
+        }
+
+        p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+                letter-spacing: 6px;
+            }
+
+            .subtitle {
+                font-size: 0.95rem;
+                letter-spacing: 1.5px;
+                gap: 15px;
+            }
+
+            .separator {
+                display: none;
+            }
+
+            .software-icon {
+                width: 28px;
+                height: 28px;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>LUNER</h1>
+        <div class="subtitle">
+            <div class="role-container">
+                <span class="role-text">Video Editor</span>
+                <div class="icon-group">
+                    <svg class="software-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="5" y="5" width="90" height="90" rx="20" /> 
+                        <text x="50" y="68" font-size="52" text-anchor="middle">Pr</text> 
+                    </svg>
+
+                    <svg class="software-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="5" y="5" width="90" height="90" rx="20" /> 
+                        <text x="50" y="68" font-size="52" text-anchor="middle">Ae</text>
+                    </svg>
+                </div>
+            </div>
+            
+            <span class="separator">•</span>
+            
+            <div class="role-container">
+                <span class="role-text">Beginner 3D Animator</span>
+                <div class="icon-group">
+                    <img class="software-icon blender-img" src="icons/blender.svg" alt="Blender">
+                </div>
+            </div>
+            
+            <span class="separator">•</span>
+            
+            <div class="role-container">
+                <span class="role-text">Graphic Designer</span>
+                <div class="icon-group">
+                    <svg class="software-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="5" y="5" width="90" height="90" rx="20" />
+                        <text x="50" y="68" font-size="52" text-anchor="middle">Ps</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="portfolio-grid">
+        <div class="video-card">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                </iframe>
+            </div>
+            <h3>Varieble Y</h3>
+            <p>Varieble Y but worse.</p>
+        </div>
+
+        <div class="video-card">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/mNxb4PlOAOM" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                </iframe>
+            </div>
+            <h3>My Video Title</h3>
+            <p>Description of the video goes here.</p>
+        </div>
+
+        <div class="video-card">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/mNxb4PlOAOM" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                </iframe>
+            </div>
+            <h3>Varieble X</h3>
+            <p>Varieble X but better.</p>
+        </div>
+    </div>
+
+    <script>
+        // Click-to-select text functionality
+        let textSelectable = false;
+
+        document.body.addEventListener('click', function() {
+            if (!textSelectable) {
+                document.body.classList.add('text-selectable');
+                textSelectable = true;
+            }
+        });
+
+        // Optional: Reset selection on double-click
+        document.body.addEventListener('dblclick', function(e) {
+            if (e.target === document.body || e.target.tagName === 'HTML') {
+                document.body.classList.remove('text-selectable');
+                textSelectable = false;
+                window.getSelection().removeAllRanges();
+            }
+        });
+    </script>
+
+</body>
+</html>
