@@ -5,8 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Luner - Professional Video Editor, Motion Graphics Artist, and Thumbnail Designer Portfolio.">
     <meta name="author" content="Luner">
-    <title>Luner | Portfolio</title>
     
+    <!-- Open Graph Meta Tags for Social Sharing -->
+    <meta property="og:title" content="Luner | Video Editor & Motion Graphics Portfolio">
+    <meta property="og:description" content="Professional video editing, motion graphics, and thumbnail design services.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://yourwebsite.com/preview-image.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <title>Luner | Portfolio</title>
     <link rel="icon" type="image/png" href="favicon.png">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,7 +21,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Unbounded:wght@500;700;900&display=swap" rel="stylesheet">
     
     <style>
-        /* Base Theme Colors */
         :root {
             --bg-deep: #05000a;
             --purple-glow: #4b0082;
@@ -23,7 +29,6 @@
             --accent-bright: #e066ff; 
         }
 
-        /* Scrollbar (Chrome, Edge, Safari) */
         ::-webkit-scrollbar { width: 12px; }
         ::-webkit-scrollbar-track { background: var(--bg-deep); }
         ::-webkit-scrollbar-thumb { 
@@ -33,7 +38,6 @@
         }
         ::-webkit-scrollbar-thumb:hover { background-color: var(--text-main); }
         
-        /* Scrollbar (Firefox) */
         html { scrollbar-color: var(--accent) var(--bg-deep); scrollbar-width: thin; scroll-behavior: smooth; }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -53,7 +57,6 @@
 
         body.text-selectable * { user-select: text; }
 
-        /* Vignette */
         body::after {
             content: "";
             position: fixed;
@@ -63,7 +66,12 @@
             background: radial-gradient(ellipse at center, rgba(0,0,0,0) 55%, rgba(0,0,0,0.33) 100%);
         }
 
-        /* === HEADER === */
+        /* Focus States for Accessibility */
+        a:focus, button:focus, .nav-btn:focus {
+            outline: 2px solid var(--accent-bright);
+            outline-offset: 2px;
+        }
+
         header {
             padding: 80px 20px 20px;
             text-align: center;
@@ -96,7 +104,7 @@
             flex-wrap: wrap;
             justify-content: center;
             width: 100%;
-            padding-left: 50px; 
+            padding-right: 23px; /* REMOVE THIS LINE TO UNCENTER SUBTITLE */
         }
 
         .role-container { display: flex; flex-direction: column; align-items: center; gap: 12px; }
@@ -104,7 +112,6 @@
         .separator { font-size: 1.5rem; opacity: 0.9; color: var(--text-main); margin-top: 8px; }
         .icon-group { display: flex; gap: 10px; align-items: center; }
 
-        /* Icon Styling */
         .software-icon {
             width: 32px; height: 32px; opacity: 1; 
             transition: transform 0.3s ease, opacity 0.3s ease;
@@ -115,9 +122,9 @@
             fill: #05000a; 
             font-family: 'Segoe UI', sans-serif; 
             font-weight: 900; 
-            user-select: none;          /* Standard */
-            -webkit-user-select: none;  /* Safari/Chrome */
-            pointer-events: none;       /* Ignored by mouse clicks completely */
+            user-select: none;
+            -webkit-user-select: none;
+            pointer-events: none;
         }
         .blender-img {
             filter: brightness(0) saturate(100%) invert(33%) sepia(58%) saturate(2370%) hue-rotate(263deg) brightness(91%) contrast(93%);
@@ -129,7 +136,6 @@
         .software-icon:not(.blender-img):hover { filter: drop-shadow(0 0 8px rgba(190, 68, 205, 0.6)); }
         .blender-img:hover { filter: brightness(0) saturate(100%) invert(33%) sepia(58%) saturate(2370%) hue-rotate(263deg) brightness(91%) contrast(93%) brightness(1.2) drop-shadow(0 0 8px rgba(190, 68, 205, 0.6)); }
 
-        /* === NAVIGATION TABS === */
         .nav-tabs {
             display: flex;
             gap: 15px;
@@ -156,6 +162,7 @@
         .nav-btn:hover {
             background: rgba(190, 68, 205, 0.2);
             color: #fff;
+            transform: translateY(-2px);
         }
 
         .nav-btn.active-tab {
@@ -165,23 +172,21 @@
             box-shadow: 0 0 15px rgba(190, 68, 205, 0.4);
         }
 
-        /* === TAB CONTENT === */
         .tab-content {
             display: none;
             width: 100%;
-            animation: fadeIn 0.5s ease;
         }
         
         .tab-content.active-content {
             display: block;
+            animation: slideIn 0.5s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
-        /* === SECTION TITLES === */
         .section-title {
             text-align: center;
             font-family: 'Unbounded', sans-serif;
@@ -204,7 +209,6 @@
             border-radius: 2px;
         }
 
-        /* === GRIDS === */
         .portfolio-grid, .thumbnail-grid {
             display: grid;
             gap: 30px;
@@ -217,27 +221,38 @@
         .portfolio-grid { grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); }
         .thumbnail-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
 
-        /* === VIDEO CARDS === */
         .video-card {
             background: rgba(26, 0, 51, 0.4);
             border: 1px solid rgba(190, 68, 205, 0.2);
             padding: 20px;
             border-radius: 20px; 
-            transition: transform 0.3s ease, border-color 0.3s ease;
-            display: flex; flex-direction: column;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            display: flex; 
+            flex-direction: column;
         }
+        
         .video-card:hover {
             transform: translateY(-8px);
             border-color: var(--accent);
             box-shadow: 0 10px 30px rgba(75, 0, 130, 0.5);
         }
-        .video-wrapper {
-            position: relative; overflow: hidden; border-radius: 16px; 
-            aspect-ratio: 16 / 9; background: #000;
+        
+        .video-card:hover .tags .tag {
+            border-color: var(--accent);
+            color: var(--accent-bright);
         }
+        
+        .video-wrapper {
+            position: relative; 
+            overflow: hidden; 
+            border-radius: 16px; 
+            aspect-ratio: 16 / 9; 
+            background: #000;
+        }
+        
         iframe { width: 100%; height: 100%; border: none; }
 
-        /* === THUMBNAIL CARDS === */
+        /* Thumbnail Cards with Skeleton Loader */
         .thumb-card {
             border-radius: 16px;
             overflow: hidden;
@@ -250,54 +265,263 @@
         }
         
         .thumb-img {
-            width: 100%; height: 100%; object-fit: cover;
-            transition: transform 0.4s ease;
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover;
+            transition: transform 0.4s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
+        
+        .thumb-img.loaded {
+            opacity: 1;
+        }
+        
+        /* Skeleton Loader */
+        .thumb-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(190, 68, 205, 0.1) 25%, rgba(190, 68, 205, 0.2) 50%, rgba(190, 68, 205, 0.1) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            z-index: 1;
+        }
+        
+        .thumb-card.loaded::before {
+            display: none;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
         
         .thumb-overlay {
-            position: absolute; inset: 0;
+            position: absolute; 
+            inset: 0;
             background: rgba(0,0,0,0.6);
-            display: flex; align-items: center; justify-content: center;
-            opacity: 0; transition: opacity 0.3s ease;
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            opacity: 0; 
+            transition: opacity 0.3s ease;
+            z-index: 2;
         }
         
-        .thumb-card:hover { border-color: var(--accent); box-shadow: 0 0 20px rgba(190, 68, 205, 0.3); }
+        .thumb-card:hover { 
+            border-color: var(--accent); 
+            box-shadow: 0 0 20px rgba(190, 68, 205, 0.3); 
+        }
+        
         .thumb-card:hover .thumb-img { transform: scale(1.05); }
         .thumb-card:hover .thumb-overlay { opacity: 1; }
 
-        .tags { display: flex; gap: 10px; margin-top: 15px; margin-bottom: 10px; }
+        /* Lightbox Modal */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .lightbox.active {
+            display: flex;
+        }
+        
+        .lightbox-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .lightbox-img {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 8px;
+            box-shadow: 0 0 50px rgba(190, 68, 205, 0.5);
+        }
+        
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(190, 68, 205, 0.3);
+            border: none;
+            color: #fff;
+            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10001;
+        }
+        
+        .lightbox-close:hover {
+            background: var(--accent);
+            transform: rotate(90deg);
+        }
+        
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(190, 68, 205, 0.3);
+            border: none;
+            color: #fff;
+            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .lightbox-nav:hover {
+            background: var(--accent);
+        }
+        
+        .lightbox-prev { left: 20px; }
+        .lightbox-next { right: 20px; }
+
+        .tags { display: flex; gap: 10px; margin-top: 15px; margin-bottom: 10px; flex-wrap: wrap; }
         .tag {
-            font-size: 0.75rem; text-transform: uppercase; padding: 4px 10px;
-            border: 1px solid rgba(190, 68, 205, 0.3); border-radius: 4px;
-            color: rgba(224, 208, 255, 0.7); font-weight: 600;
+            font-size: 0.75rem; 
+            text-transform: uppercase; 
+            padding: 4px 10px;
+            border: 1px solid rgba(190, 68, 205, 0.3); 
+            border-radius: 4px;
+            color: rgba(224, 208, 255, 0.7); 
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
 
         h3 {
-            margin-top: 5px; margin-bottom: 8px; color: #fff;
-            font-weight: 500; font-size: 1.3rem; font-family: 'Unbounded', sans-serif;
+            margin-top: 5px; 
+            margin-bottom: 8px; 
+            color: #fff;
+            font-weight: 500; 
+            font-size: 1.3rem; 
+            font-family: 'Unbounded', sans-serif;
         }
+        
         p { font-size: 0.95rem; opacity: 0.8; line-height: 1.6; margin-bottom: 10px; }
 
-        /* === FOOTER === */
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--accent);
+            border: none;
+            color: #000;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(190, 68, 205, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .back-to-top.visible {
+            display: flex;
+            animation: fadeInUp 0.3s ease;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(190, 68, 205, 0.6);
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         footer {
-            margin-top: 80px; padding: 60px 20px; text-align: center; width: 100%;
+            margin-top: 80px; 
+            padding: 60px 20px; 
+            text-align: center; 
+            width: 100%;
             background: linear-gradient(to top, #0f001e, transparent);
         }
-        .footer-content h2 { font-family: 'Unbounded', sans-serif; font-weight: 500; margin-bottom: 20px; font-size: 1.8rem; }
-        .contact-btn {
-            display: inline-block; padding: 12px 30px; background: transparent;
-            border: 2px solid var(--accent); color: var(--text-main); text-decoration: none;
-            font-weight: 600; border-radius: 50px; transition: all 0.3s ease; margin-bottom: 30px;
+        
+        .footer-content h2 { 
+            font-family: 'Unbounded', sans-serif; 
+            font-weight: 500; 
+            margin-bottom: 20px; 
+            font-size: 1.8rem; 
         }
-        .contact-btn:hover { background: var(--accent); color: #000; box-shadow: 0 0 20px rgba(190, 68, 205, 0.4); }
-        .social-links { display: flex; justify-content: center; gap: 20px; align-items: center; margin-bottom: 20px; }
-        .social-icon-link { display: block; width: 32px; height: 32px; transition: transform 0.3s ease; }
-        .social-icon-svg { width: 100%; height: 100%; fill: var(--accent); transition: fill 0.3s ease, filter 0.3s ease; }
-        .steam-img { width: 32px; height: 32px; filter: brightness(0) saturate(100%) invert(33%) sepia(58%) saturate(2370%) hue-rotate(263deg) brightness(91%) contrast(93%); transition: filter 0.3s ease, transform 0.3s ease; }
+        
+        .contact-btn {
+            display: inline-block; 
+            padding: 12px 30px; 
+            background: transparent;
+            border: 2px solid var(--accent); 
+            color: var(--text-main); 
+            text-decoration: none;
+            font-weight: 600; 
+            border-radius: 50px; 
+            transition: all 0.3s ease; 
+            margin-bottom: 30px;
+        }
+        
+        .contact-btn:hover { 
+            background: var(--accent); 
+            color: #000; 
+            box-shadow: 0 0 20px rgba(190, 68, 205, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .social-links { 
+            display: flex; 
+            justify-content: center; 
+            gap: 20px; 
+            align-items: center; 
+            margin-bottom: 20px; 
+        }
+        
+        .social-icon-link { 
+            display: block; 
+            width: 32px; 
+            height: 32px; 
+            transition: transform 0.3s ease; 
+        }
+        
+        .social-icon-svg { 
+            width: 100%; 
+            height: 100%; 
+            fill: var(--accent); 
+            transition: fill 0.3s ease, filter 0.3s ease; 
+        }
+        
+        .steam-img { 
+            width: 32px; 
+            height: 32px; 
+            filter: brightness(0) saturate(100%) invert(33%) sepia(58%) saturate(2370%) hue-rotate(263deg) brightness(91%) contrast(93%); 
+            transition: filter 0.3s ease, transform 0.3s ease; 
+        }
         
         .social-icon-link:hover { transform: scale(1.1); }
-        .social-icon-link:hover .social-icon-svg { fill: var(--accent-bright); filter: drop-shadow(0 0 8px rgba(190, 68, 205, 0.6)); }
-        .social-icon-link:hover .steam-img { filter: brightness(0) saturate(100%) invert(33%) sepia(58%) saturate(2370%) hue-rotate(263deg) brightness(91%) contrast(93%) brightness(1.2) drop-shadow(0 0 8px rgba(190, 68, 205, 0.6)); }
+        .social-icon-link:hover .social-icon-svg { 
+            fill: var(--accent-bright); 
+            filter: drop-shadow(0 0 8px rgba(190, 68, 205, 0.6)); 
+        }
+        .social-icon-link:hover .steam-img { 
+            filter: brightness(0) saturate(100%) invert(33%) sepia(58%) saturate(2370%) hue-rotate(263deg) brightness(91%) contrast(93%) brightness(1.2) drop-shadow(0 0 8px rgba(190, 68, 205, 0.6)); 
+        }
         
         .copyright { font-size: 0.8rem; opacity: 0.5; }
 
@@ -305,8 +529,21 @@
             h1 { font-size: 2.2rem; }
             .subtitle { padding-left: 0; }
             .separator { display: none; }
-            .portfolio-grid, .thumbnail-grid { grid-template-columns: 1fr; padding: 20px; }
+            .portfolio-grid, .thumbnail-grid { 
+                grid-template-columns: 1fr; 
+                padding: 20px; 
+                gap: 20px;
+            }
             .nav-tabs { flex-wrap: wrap; justify-content: center; }
+            .lightbox-nav { width: 40px; height: 40px; font-size: 1.5rem; }
+            .lightbox-prev { left: 10px; }
+            .lightbox-next { right: 10px; }
+            .back-to-top { bottom: 20px; right: 20px; }
+        }
+        
+        @media (max-width: 400px) {
+            h1 { font-size: 1.8rem; }
+            .section-title { font-size: 1.4rem; }
         }
     </style>
 </head>
@@ -335,7 +572,7 @@
             </div>
             <span class="separator">•</span>
             <div class="role-container">
-                <span class="role-text">Thumbnail Designer</span>
+                <span class="role-text">Designer</span>
                 <div class="icon-group">
                     <svg class="software-icon" role="img" aria-label="Photoshop" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                         <rect x="5" y="5" width="90" height="90" rx="20" /> <text x="50" y="68" font-size="52" text-anchor="middle">Ps</text>
@@ -344,13 +581,13 @@
             </div>
         </div>
 
-        <nav class="nav-tabs">
-            <div id="btn-videos" class="nav-btn active-tab" onclick="openTab('videos')">Videos</div>
-            <div id="btn-thumbs" class="nav-btn" onclick="openTab('thumbs')">Thumbnails/Designs</div>
+        <nav class="nav-tabs" role="tablist">
+            <button id="btn-videos" class="nav-btn active-tab" onclick="openTab('videos')" role="tab" aria-selected="true" aria-controls="videos">Videos</button>
+            <button id="btn-thumbs" class="nav-btn" onclick="openTab('thumbs')" role="tab" aria-selected="false" aria-controls="thumbs">Thumbnails | Designs</button>
         </nav>
     </header>
 
-    <div id="videos" class="tab-content active-content">
+    <div id="videos" class="tab-content active-content" role="tabpanel" aria-labelledby="btn-videos">
         <h2 class="section-title">Videos</h2>
         <div class="portfolio-grid">
             <div class="video-card">
@@ -380,47 +617,103 @@
         </div>
     </div>
 
-    <div id="thumbs" class="tab-content">
-        <h2 class="section-title">Thumbnails</h2>
+    <div id="thumbs" class="tab-content" role="tabpanel" aria-labelledby="btn-thumbs">
+        <h2 class="section-title">Thumbnails | Designs</h2>
         <div class="thumbnail-grid">
-            
-            <div class="thumb-card"><img class="thumb-img" src="thumbnails/thumb1.png" alt="Thumbnail 1" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+1'"><div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div></div>
-            <div class="thumb-card"><img class="thumb-img" src="thumbnails/thumb2.png" alt="Thumbnail 2" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+2'"><div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div></div>
-            <div class="thumb-card"><img class="thumb-img" src="thumbnails/thumb3.png" alt="Thumbnail 3" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+3'"><div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div></div>
-            <div class="thumb-card"><img class="thumb-img" src="thumbnails/thumb4.png" alt="Thumbnail 4" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+4'"><div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div></div>
-            <div class="thumb-card"><img class="thumb-img" src="thumbnails/thumb5.png" alt="Thumbnail 5" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+5'"><div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div></div>
-            <div class="thumb-card"><img class="thumb-img" src="thumbnails/thumb6.png" alt="Thumbnail 6" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+6'"><div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div></div>
-            <div class="thumb-card"><img class="thumb-img" src="thumbnails/thumb7.png" alt="Thumbnail 7" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+7'"><div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div></div>
-            <div class="thumb-card"><img class="thumb-img" src="thumbnails/thumb8.png" alt="Thumbnail 8" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+8'"><div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div></div>
-            <div class="thumb-card"><img class="thumb-img" src="thumbnails/thumb9.png" alt="Thumbnail 9" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+9'"><div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div></div>
-            <div class="thumb-card"><img class="thumb-img" src="thumbnails/thumb10.png" alt="Thumbnail 10" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+10'"><div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div></div>
-            <div class="thumb-card"><img class="thumb-img" src="thumbnails/thumb11.png" alt="Thumbnail 11" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+11'"><div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div></div>
-            <div class="thumb-card"><img class="thumb-img" src="thumbnails/thumb12.png" alt="Thumbnail 12" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+12'"><div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div></div>
-            <div class="thumb-card"><img class="thumb-img" src="thumbnails/thumb13.png" alt="Thumbnail 13" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+13'"><div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div></div>
-            <div class="thumb-card"><img class="thumb-img" src="thumbnails/thumb14.png" alt="Thumbnail 14" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+14'"><div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div></div>
-            <div class="thumb-card"><img class="thumb-img" src="thumbnails/thumb15.png" alt="Thumbnail 15" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+15'"><div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div></div>
-
+            <div class="thumb-card" onclick="openLightbox(0)">
+                <img class="thumb-img" src="thumbnails/thumb1.png" alt="Professional gaming thumbnail with vibrant effects" loading="lazy" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+1'">
+                <div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+            </div>
+            <div class="thumb-card" onclick="openLightbox(1)">
+                <img class="thumb-img" src="thumbnails/thumb2.png" alt="Eye-catching YouTube thumbnail design" loading="lazy" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+2'">
+                <div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+            </div>
+            <div class="thumb-card" onclick="openLightbox(2)">
+                <img class="thumb-img" src="thumbnails/thumb3.png" alt="Creative thumbnail with bold typography" loading="lazy" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+3'">
+                <div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+            </div>
+            <div class="thumb-card" onclick="openLightbox(3)">
+                <img class="thumb-img" src="thumbnails/thumb4.png" alt="Modern thumbnail design with gradient overlays" loading="lazy" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+4'">
+                <div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+            </div>
+            <div class="thumb-card" onclick="openLightbox(4)">
+                <img class="thumb-img" src="thumbnails/thumb5.png" alt="Engaging content thumbnail with dynamic composition" loading="lazy" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+5'">
+                <div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+            </div>
+            <div class="thumb-card" onclick="openLightbox(5)">
+                <img class="thumb-img" src="thumbnails/thumb6.png" alt="High-contrast thumbnail design" loading="lazy" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+6'">
+                <div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+            </div>
+            <div class="thumb-card" onclick="openLightbox(6)">
+                <img class="thumb-img" src="thumbnails/thumb7.png" alt="Colorful gaming thumbnail with text effects" loading="lazy" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+7'">
+                <div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+            </div>
+            <div class="thumb-card" onclick="openLightbox(7)">
+                <img class="thumb-img" src="thumbnails/thumb8.png" alt="Minimalist thumbnail with strong focal point" loading="lazy" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+8'">
+                <div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+            </div>
+            <div class="thumb-card" onclick="openLightbox(8)">
+                <img class="thumb-img" src="thumbnails/thumb9.png" alt="Action-packed thumbnail design" loading="lazy" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+9'">
+                <div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+            </div>
+            <div class="thumb-card" onclick="openLightbox(9)">
+                <img class="thumb-img" src="thumbnails/thumb10.png" alt="Professional content thumbnail" loading="lazy" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+10'">
+                <div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+            </div>
+            <div class="thumb-card" onclick="openLightbox(10)">
+                <img class="thumb-img" src="thumbnails/thumb11.png" alt="Sleek modern thumbnail design" loading="lazy" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+11'">
+                <div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+            </div>
+            <div class="thumb-card" onclick="openLightbox(11)">
+                <img class="thumb-img" src="thumbnails/thumb12.png" alt="Vibrant thumbnail with custom graphics" loading="lazy" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+12'">
+                <div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+            </div>
+            <div class="thumb-card" onclick="openLightbox(12)">
+                <img class="thumb-img" src="thumbnails/thumb13.png" alt="Energetic gaming content thumbnail" loading="lazy" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+13'">
+                <div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+            </div>
+            <div class="thumb-card" onclick="openLightbox(13)">
+                <img class="thumb-img" src="thumbnails/thumb14.png" alt="Bold thumbnail with dramatic lighting" loading="lazy" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+14'">
+                <div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+            </div>
+            <div class="thumb-card" onclick="openLightbox(14)">
+                <img class="thumb-img" src="thumbnails/thumb15.png" alt="Creative thumbnail with layered effects" loading="lazy" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+15'">
+                <div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+            </div>
         </div>
     </div>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="lightbox">
+        <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close lightbox">×</button>
+        <button class="lightbox-nav lightbox-prev" onclick="changeLightboxImage(-1)" aria-label="Previous image">‹</button>
+        <div class="lightbox-content">
+            <img id="lightbox-img" class="lightbox-img" src="" alt="Full size thumbnail">
+        </div>
+        <button class="lightbox-nav lightbox-next" onclick="changeLightboxImage(1)" aria-label="Next image">›</button>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" onclick="scrollToTop()" aria-label="Back to top">↑</button>
 
     <footer>
         <div class="footer-content">
             <h2>Ready to collaborate?</h2>
             <a href="mailto:your-email@example.com" class="contact-btn">Contact Me</a>
             <div class="social-links">
-                <a href="https://youtube.com/@lunerzz?si=SGswyJ51LoL4yXvA" class="social-icon-link" target="_blank" aria-label="YouTube">
+                <a href="https://youtube.com/@lunerzz?si=SGswyJ51LoL4yXvA" class="social-icon-link" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
                     <svg class="social-icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
                 </a>
-               <a href="https://youtube.com/@mp1-k3k?si=dgt5zDYZuSlebft1" class="social-icon-link" target="_blank" aria-label="YouTube Secondary">
+               <a href="https://youtube.com/@mp1-k3k?si=dgt5zDYZuSlebft1" class="social-icon-link" target="_blank" rel="noopener noreferrer" aria-label="YouTube Secondary">
                     <svg class="social-icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                         <text x="18" y="8" font-size="10" font-weight="bold" font-family="Arial" text-anchor="middle" fill="#2596be">2</text>
                     </svg>
                 </a>
-                <a href="https://discord.com/users/1021899851891486760" class="social-icon-link" target="_blank" aria-label="Discord">
+                <a href="https://discord.com/users/1021899851891486760" class="social-icon-link" target="_blank" rel="noopener noreferrer" aria-label="Discord">
                     <svg class="social-icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419z"/></svg>
                 </a>
-                <a href="https://steamcommunity.com/id/Luner_Zz/" class="social-icon-link" target="_blank" aria-label="Steam">
+                <a href="https://steamcommunity.com/id/Luner_Zz/" class="social-icon-link" target="_blank" rel="noopener noreferrer" aria-label="Steam">
                     <img class="steam-img" src="icons/steam.svg" alt="Steam Profile" width="32" height="32">
                 </a>
             </div>
@@ -429,26 +722,133 @@
     </footer>
 
     <script>
+        // Tab Navigation
         function openTab(tabName) {
             var contents = document.getElementsByClassName("tab-content");
-            for (var i = 0; i < contents.length; i++) { contents[i].classList.remove("active-content"); }
+            for (var i = 0; i < contents.length; i++) { 
+                contents[i].classList.remove("active-content"); 
+                contents[i].setAttribute('aria-hidden', 'true');
+            }
             var buttons = document.getElementsByClassName("nav-btn");
-            for (var i = 0; i < buttons.length; i++) { buttons[i].classList.remove("active-tab"); }
+            for (var i = 0; i < buttons.length; i++) { 
+                buttons[i].classList.remove("active-tab"); 
+                buttons[i].setAttribute('aria-selected', 'false');
+            }
             document.getElementById(tabName).classList.add("active-content");
+            document.getElementById(tabName).setAttribute('aria-hidden', 'false');
             document.getElementById("btn-" + tabName).classList.add("active-tab");
+            document.getElementById("btn-" + tabName).setAttribute('aria-selected', 'true');
         }
+
+        // Keyboard Navigation for Tabs
+        document.addEventListener('keydown', function(e) {
+            if (e.target.classList.contains('nav-btn')) {
+                const tabs = Array.from(document.querySelectorAll('.nav-btn'));
+                const currentIndex = tabs.indexOf(e.target);
+                
+                if (e.key === 'ArrowRight') {
+                    const nextIndex = (currentIndex + 1) % tabs.length;
+                    tabs[nextIndex].click();
+                    tabs[nextIndex].focus();
+                } else if (e.key === 'ArrowLeft') {
+                    const prevIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+                    tabs[prevIndex].click();
+                    tabs[prevIndex].focus();
+                }
+            }
+        });
+
+        // Lightbox
+        let currentLightboxIndex = 0;
+        const thumbnailImages = document.querySelectorAll('.thumb-img');
+
+        function openLightbox(index) {
+            currentLightboxIndex = index;
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = thumbnailImages[index].src;
+            lightboxImg.alt = thumbnailImages[index].alt;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function changeLightboxImage(direction) {
+            currentLightboxIndex += direction;
+            if (currentLightboxIndex < 0) currentLightboxIndex = thumbnailImages.length - 1;
+            if (currentLightboxIndex >= thumbnailImages.length) currentLightboxIndex = 0;
+            
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = thumbnailImages[currentLightboxIndex].src;
+            lightboxImg.alt = thumbnailImages[currentLightboxIndex].alt;
+        }
+
+        // Keyboard controls for lightbox
+        document.addEventListener('keydown', function(e) {
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox.classList.contains('active')) {
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowRight') changeLightboxImage(1);
+                if (e.key === 'ArrowLeft') changeLightboxImage(-1);
+            }
+        });
+
+        // Close lightbox on background click
+        document.getElementById('lightbox').addEventListener('click', function(e) {
+            if (e.target === this) closeLightbox();
+        });
+
+        // Back to Top Button
+        const backToTopBtn = document.querySelector('.back-to-top');
+        
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Text Selection Toggle
         document.addEventListener('DOMContentLoaded', () => {
             let textSelectable = false;
-            document.body.addEventListener('click', function() { if (!textSelectable) { document.body.classList.add('text-selectable'); textSelectable = true; } });
+            document.body.addEventListener('click', function(e) { 
+                if (!textSelectable && !e.target.closest('.nav-btn, .thumb-card, .lightbox, .back-to-top, a, button')) { 
+                    document.body.classList.add('text-selectable'); 
+                    textSelectable = true; 
+                } 
+            });
             document.body.addEventListener('dblclick', function(e) {
                 if (e.target === document.body || e.target.tagName === 'HTML') {
-                    document.body.classList.remove('text-selectable'); textSelectable = false; window.getSelection().removeAllRanges();
+                    document.body.classList.remove('text-selectable'); 
+                    textSelectable = false; 
+                    window.getSelection().removeAllRanges();
+                }
+            });
+
+            // Lazy load images with skeleton loader
+            const images = document.querySelectorAll('.thumb-img');
+            images.forEach(img => {
+                img.addEventListener('load', function() {
+                    this.classList.add('loaded');
+                    this.parentElement.classList.add('loaded');
+                });
+                
+                // Trigger load for cached images
+                if (img.complete) {
+                    img.classList.add('loaded');
+                    img.parentElement.classList.add('loaded');
                 }
             });
         });
     </script>
 </body>
 </html>
-
-
-
