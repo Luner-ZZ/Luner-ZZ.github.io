@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Luner - Professional Video Editor, Motion Graphics Artist, and Graphic Designer Portfolio. View showreels and 3D animation projects.">
+    <meta name="description" content="Luner - Professional Video Editor, Motion Graphics Artist, and Graphic Designer Portfolio.">
     <meta name="author" content="Luner">
     <title>Luner | Portfolio</title>
     
@@ -11,7 +11,6 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Unbounded:wght@500;700;900&display=swap" rel="stylesheet">
     
     <style>
@@ -20,13 +19,42 @@
             --bg-deep: #05000a;
             --purple-glow: #4b0082;
             --text-main: #e0d0ff;
-            --accent: #be44cd;
+            --accent: #be44cd;       /* Standard Magenta */
+            --accent-bright: #e066ff; /* Hover Magenta */
+        }
+
+        /* === SCROLLBAR (Firefox & Zen) === */
+        html {
+            scrollbar-color: var(--accent) var(--bg-deep);
+            scrollbar-width: thin;
+        }
+
+        /* === SCROLLBAR (Chrome, Edge, Safari) === */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-deep); 
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: var(--accent); 
+            border-radius: 6px;
+            border: 3px solid var(--bg-deep); 
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: var(--text-main); 
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        /* Custom Selection Color */
+        ::selection {
+            background: var(--accent);
+            color: #000;
         }
 
         body {
@@ -45,7 +73,6 @@
             user-select: text;
         }
 
-        /* Vignette Overlay */
         body::after {
             content: "";
             position: fixed;
@@ -67,8 +94,8 @@
             justify-content: center;
             align-items: center;
             z-index: 1;
-            /* PERFORMANCE: optimizing rendering for large header area */
             contain: layout;
+            width: 100%;
         }
 
         h1 {
@@ -85,7 +112,7 @@
 
         .subtitle {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             gap: 20px;
             font-size: 1.1rem;
             opacity: 0.9;
@@ -93,6 +120,8 @@
             font-weight: 400;
             flex-wrap: wrap;
             justify-content: center;
+            width: 100%;
+            padding-left: 50px; 
         }
 
         .role-container {
@@ -124,31 +153,44 @@
         .software-icon {
             width: 32px;
             height: 32px;
-            opacity: 0.8;
+            opacity: 1; 
             transition: transform 0.3s ease, opacity 0.3s ease, filter 0.3s ease;
             will-change: transform, filter;
         }
 
         /* === ADOBE ICONS (Inline SVG) Styling === */
         .software-icon rect {
-            fill: #be44cd; 
+            fill: var(--accent); 
+            transition: fill 0.3s ease;
         }
-        
+        .software-icon:hover rect {
+            fill: var(--accent-bright);
+        }
         .software-icon text {
             fill: #05000a; 
-            /* REVERTED: Back to standard fonts to look like official Adobe logos */
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            /* REVERTED: Back to thick/bold weight */
             font-weight: 900;
         }
 
-        /* === BLENDER ICON (IMG Tag) Styling === */
-        .blender-img {
+        /* === BLENDER & STEAM ICONS (External Images) Styling === */
+        /* This filter turns black/white images into the #be44cd Magenta color */
+        .blender-img, .steam-img {
             filter: brightness(0) saturate(100%) invert(33%) sepia(58%) saturate(2370%) hue-rotate(263deg) brightness(91%) contrast(93%);
+            transition: filter 0.3s ease, transform 0.3s ease;
         }
 
-        .software-icon:hover {
-            opacity: 1;
+        .blender-img {
+            position: relative;
+            left: -5px;
+        }
+        
+        .steam-img {
+            width: 32px;
+            height: 32px;
+        }
+
+        /* Hover Effects */
+        .software-icon:hover, .steam-img:hover {
             transform: scale(1.1);
         }
         
@@ -156,8 +198,9 @@
              filter: drop-shadow(0 0 8px rgba(190, 68, 205, 0.6));
         }
 
-        .blender-img:hover {
-            filter: brightness(0) saturate(100%) invert(33%) sepia(58%) saturate(2370%) hue-rotate(263deg) brightness(91%) contrast(93%) drop-shadow(0 0 8px rgba(190, 68, 205, 0.6));
+        /* Image Hover: Brighter + Glow */
+        .blender-img:hover, .steam-img:hover {
+            filter: brightness(0) saturate(100%) invert(33%) sepia(58%) saturate(2370%) hue-rotate(263deg) brightness(91%) contrast(93%) brightness(1.2) drop-shadow(0 0 8px rgba(190, 68, 205, 0.6));
         }
 
         .portfolio-grid {
@@ -168,7 +211,6 @@
             max-width: 1100px;
             width: 100%;
             z-index: 1;
-            margin-bottom: 60px;
         }
 
         /* Video Card Styling */
@@ -180,6 +222,8 @@
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, border-color 0.4s ease;
             will-change: transform, box-shadow;
             contain: content; 
+            display: flex;
+            flex-direction: column;
         }
 
         .video-card:hover {
@@ -188,7 +232,6 @@
             box-shadow: 0 10px 30px rgba(75, 0, 130, 0.5);
         }
 
-        /* YouTube Embed Styling */
         .video-wrapper {
             position: relative;
             overflow: hidden;
@@ -203,8 +246,26 @@
             border: none;
         }
 
-        h3 {
+        .tags {
+            display: flex;
+            gap: 10px;
             margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
+        .tag {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 4px 10px;
+            border: 1px solid rgba(190, 68, 205, 0.3);
+            border-radius: 4px;
+            color: rgba(224, 208, 255, 0.7);
+            font-weight: 600;
+        }
+
+        h3 {
+            margin-top: 5px;
             margin-bottom: 8px;
             color: #fff;
             font-weight: 500;
@@ -217,6 +278,81 @@
             font-size: 0.95rem;
             opacity: 0.8;
             line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        /* Footer Styling */
+        footer {
+            margin-top: 40px;
+            padding: 60px 20px;
+            text-align: center;
+            width: 100%;
+            background: linear-gradient(to top, #0f001e, transparent);
+        }
+
+        .footer-content h2 {
+            font-family: 'Unbounded', sans-serif;
+            font-weight: 500;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .contact-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+        }
+
+        .contact-btn:hover {
+            background: var(--accent);
+            color: #000;
+            box-shadow: 0 0 20px rgba(190, 68, 205, 0.4);
+        }
+
+        /* Social Icons Container */
+        .social-links {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px; /* Space between icons */
+            align-items: center;
+        }
+
+        /* Social Icons SVG Styling */
+        .social-icon-link {
+            display: block;
+            width: 32px;
+            height: 32px;
+            transition: transform 0.3s ease;
+        }
+
+        .social-icon-svg {
+            width: 100%;
+            height: 100%;
+            fill: var(--accent); /* Default Color */
+            transition: fill 0.3s ease, filter 0.3s ease;
+        }
+
+        /* Hover Effects for Social Icons */
+        .social-icon-link:hover {
+            transform: scale(1.1);
+        }
+
+        .social-icon-link:hover .social-icon-svg {
+            fill: var(--accent-bright); /* Hover Color */
+            filter: drop-shadow(0 0 8px rgba(190, 68, 205, 0.6));
+        }
+
+        .copyright {
+            font-size: 0.8rem;
+            opacity: 0.5;
         }
 
         @media (max-width: 768px) {
@@ -229,6 +365,7 @@
                 font-size: 0.95rem;
                 letter-spacing: 1px;
                 gap: 15px;
+                padding-left: 0;
             }
 
             .separator {
@@ -303,6 +440,10 @@
                         allowfullscreen>
                 </iframe>
             </div>
+            <div class="tags">
+                <span class="tag">After Effects</span>
+                <span class="tag">Premiere</span>
+            </div>
             <h3>Motion Graphics Showreel</h3>
             <p>High-energy sequence featuring dynamic transitions and kinetic typography.</p>
         </div>
@@ -316,23 +457,58 @@
                         allowfullscreen>
                 </iframe>
             </div>
+            <div class="tags">
+                <span class="tag">Blender 3D</span>
+                <span class="tag">Cycles</span>
+            </div>
             <h3>3D Animation Test</h3>
             <p>Experimental render exploring lighting techniques and material shaders.</p>
         </div>
 
         <div class="video-card">
             <div class="video-wrapper">
-                 <iframe src="https://www.youtube.com/embed/mNxb4PlOAOM" 
+                <iframe src="https://www.youtube.com/embed/mNxb4PlOAOM" 
                         title="Brand Identity Package"
                         loading="lazy"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                         allowfullscreen>
                 </iframe>
             </div>
+            <div class="tags">
+                <span class="tag">Photoshop</span>
+                <span class="tag">Illustrator</span>
+            </div>
             <h3>Brand Identity Package</h3>
             <p>Complete visual identity suite including logo animation and brand guidelines.</p>
         </div>
     </div>
+
+    <footer>
+        <div class="footer-content">
+            <h2>Ready to collaborate?</h2>
+            <a href="mailto:your-email@example.com" class="contact-btn">Contact Me</a>
+            
+            <div class="social-links">
+                <a href="https://youtube.com/@lunerzz?si=SGswyJ51LoL4yXvA" class="social-icon-link" target="_blank" aria-label="YouTube">
+                    <svg class="social-icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                </a>
+
+                <a href="https://discord.com/users/1021899851891486760" class="social-icon-link" target="_blank" aria-label="Discord">
+                    <svg class="social-icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419z"/>
+                    </svg>
+                </a>
+
+                <a href="https://steamcommunity.com/id/Luner_Zz/" class="social-icon-link" target="_blank" aria-label="Steam">
+                    <img class="steam-img" src="icons/steam.svg" alt="Steam Profile" width="32" height="32">
+                </a>
+            </div>
+            
+            <p class="copyright">© 2026 Luner. All rights reserved.</p>
+        </div>
+    </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
