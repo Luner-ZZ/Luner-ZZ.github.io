@@ -16,6 +16,11 @@
     <title>Luner | Portfolio</title>
     <link rel="icon" type="image/png" href="favicon.png">
     
+    <!-- Preload first 3 thumbnails for instant display -->
+    <link rel="preload" as="image" href="thumbnails/original/thumb1.png">
+    <link rel="preload" as="image" href="thumbnails/original/thumb2.png">
+    <link rel="preload" as="image" href="thumbnails/original/thumb3.png">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="dns-prefetch" href="https://www.youtube.com">
@@ -260,7 +265,7 @@
         
         iframe { width: 100%; height: 100%; border: none; }
 
-        /* Thumbnail Cards with Skeleton Loader */
+        /* Thumbnail Cards with Enhanced Loading */
         .thumb-card {
             border-radius: 16px;
             overflow: hidden;
@@ -272,16 +277,19 @@
             background: rgba(0,0,0,0.3);
         }
         
+        /* Blur-up effect for loading */
         .thumb-img {
             width: 100%; 
             height: 100%; 
             object-fit: cover;
-            transition: transform 0.4s ease, opacity 0.3s ease;
+            transition: transform 0.4s ease, opacity 0.5s ease, filter 0.5s ease;
             opacity: 0;
+            filter: blur(20px);
         }
         
         .thumb-img.loaded {
             opacity: 1;
+            filter: blur(0px);
         }
         
         /* Skeleton Loader */
@@ -354,6 +362,28 @@
             max-height: 90vh;
             border-radius: 8px;
             transition: box-shadow 0.3s ease;
+        }
+        
+        /* Quality toggle button in lightbox */
+        .quality-toggle {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(190, 68, 205, 0.3);
+            border: 1px solid var(--accent);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            z-index: 10002;
+        }
+        
+        .quality-toggle:hover {
+            background: var(--accent);
+            color: #000;
         }
         
         .lightbox-close {
@@ -450,6 +480,11 @@
             opacity: 1;
             pointer-events: auto;
             transform: translateY(0);
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(190, 68, 205, 0.6);
         }
 
         footer {
@@ -623,63 +658,51 @@
         <h2 class="section-title">Thumbnails | Designs</h2>
         <div class="thumbnail-grid">
             <div class="thumb-card" onclick="openLightbox(0)">
-                <img class="thumb-img" src="thumbnails/thumb1.png" alt="Professional gaming thumbnail with vibrant effects" loading="lazy" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+1'">
+                <picture>
+                    <source srcset="thumbnails/thumb1.webp" type="image/webp">
+                    <img class="thumb-img" 
+                         data-src="thumbnails/thumb1.webp" 
+                         data-original="thumbnails/thumb1.png"
+                         src="thumbnails/thumb1.webp" 
+                         alt="Professional gaming thumbnail with vibrant effects" 
+                         loading="lazy">
+                </picture>
                 <div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
             </div>
             <div class="thumb-card" onclick="openLightbox(1)">
-                <img class="thumb-img" src="thumbnails/thumb2.png" alt="Eye-catching YouTube thumbnail design" loading="lazy" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+2'">
+                <picture>
+                    <source srcset="thumbnails/thumb2.webp" type="image/webp">
+                    <img class="thumb-img" 
+                         data-src="thumbnails/thumb2.webp" 
+                         data-original="thumbnails/thumb2.png"
+                         src="thumbnails/thumb2.webp" 
+                         alt="Eye-catching YouTube thumbnail design" 
+                         loading="lazy">
+                </picture>
                 <div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
             </div>
             <div class="thumb-card" onclick="openLightbox(2)">
-                <img class="thumb-img" src="thumbnails/thumb3.png" alt="Creative thumbnail with bold typography" loading="lazy" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+3'">
+                <picture>
+                    <source srcset="thumbnails/thumb3.webp" type="image/webp">
+                    <img class="thumb-img" 
+                         data-src="thumbnails/thumb3.webp" 
+                         data-original="thumbnails/thumb3.png"
+                         src="thumbnails/thumb3.webp" 
+                         alt="Creative thumbnail with bold typography" 
+                         loading="lazy">
+                </picture>
                 <div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
             </div>
             <div class="thumb-card" onclick="openLightbox(3)">
-                <img class="thumb-img" src="thumbnails/thumb4.png" alt="Modern thumbnail design with gradient overlays" loading="lazy" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+4'">
-                <div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
-            </div>
-            <div class="thumb-card" onclick="openLightbox(4)">
-                <img class="thumb-img" src="thumbnails/thumb5.png" alt="Engaging content thumbnail with dynamic composition" loading="lazy" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+5'">
-                <div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
-            </div>
-            <div class="thumb-card" onclick="openLightbox(5)">
-                <img class="thumb-img" src="thumbnails/thumb6.png" alt="High-contrast thumbnail design" loading="lazy" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+6'">
-                <div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
-            </div>
-            <div class="thumb-card" onclick="openLightbox(6)">
-                <img class="thumb-img" src="thumbnails/thumb7.png" alt="Colorful gaming thumbnail with text effects" loading="lazy" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+7'">
-                <div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
-            </div>
-            <div class="thumb-card" onclick="openLightbox(7)">
-                <img class="thumb-img" src="thumbnails/thumb8.png" alt="Minimalist thumbnail with strong focal point" loading="lazy" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+8'">
-                <div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
-            </div>
-            <div class="thumb-card" onclick="openLightbox(8)">
-                <img class="thumb-img" src="thumbnails/thumb9.png" alt="Action-packed thumbnail design" loading="lazy" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+9'">
-                <div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
-            </div>
-            <div class="thumb-card" onclick="openLightbox(9)">
-                <img class="thumb-img" src="thumbnails/thumb10.png" alt="Professional content thumbnail" loading="lazy" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+10'">
-                <div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
-            </div>
-            <div class="thumb-card" onclick="openLightbox(10)">
-                <img class="thumb-img" src="thumbnails/thumb11.png" alt="Sleek modern thumbnail design" loading="lazy" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+11'">
-                <div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
-            </div>
-            <div class="thumb-card" onclick="openLightbox(11)">
-                <img class="thumb-img" src="thumbnails/thumb12.png" alt="Vibrant thumbnail with custom graphics" loading="lazy" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+12'">
-                <div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
-            </div>
-            <div class="thumb-card" onclick="openLightbox(12)">
-                <img class="thumb-img" src="thumbnails/thumb13.png" alt="Energetic gaming content thumbnail" loading="lazy" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+13'">
-                <div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
-            </div>
-            <div class="thumb-card" onclick="openLightbox(13)">
-                <img class="thumb-img" src="thumbnails/thumb14.png" alt="Bold thumbnail with dramatic lighting" loading="lazy" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+14'">
-                <div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
-            </div>
-            <div class="thumb-card" onclick="openLightbox(14)">
-                <img class="thumb-img" src="thumbnails/thumb15.png" alt="Creative thumbnail with layered effects" loading="lazy" onerror="this.src='https://placehold.co/600x338/1a0033/be44cd?text=Thumb+15'">
+                <picture>
+                    <source srcset="thumbnails/thumb4.webp" type="image/webp">
+                    <img class="thumb-img" 
+                         data-src="thumbnails/thumb4.webp" 
+                         data-original="thumbnails/thumb4.png"
+                         src="thumbnails/thumb4.webp" 
+                         alt="Modern thumbnail design with gradient overlays" 
+                         loading="lazy">
+                </picture>
                 <div class="thumb-overlay"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
             </div>
         </div>
@@ -688,6 +711,7 @@
     <!-- Lightbox Modal -->
     <div id="lightbox" class="lightbox">
         <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close lightbox">×</button>
+        <button class="quality-toggle" id="quality-btn" onclick="toggleQuality()">View Original Quality</button>
         <button class="lightbox-nav lightbox-prev" onclick="changeLightboxImage(-1)" aria-label="Previous image">‹</button>
         <div class="lightbox-content">
             <img id="lightbox-img" class="lightbox-img" src="" alt="Full size thumbnail">
@@ -763,8 +787,9 @@
             }
         });
 
-        // Lightbox with Dynamic Color Extraction
+        // Lightbox with Dynamic Color Extraction and Quality Toggle
         let currentLightboxIndex = 0;
+        let isOriginalQuality = false;
         const thumbnailImages = document.querySelectorAll('.thumb-img');
 
         function getDominantColor(imgElement) {
@@ -781,7 +806,6 @@
                 let r = 0, g = 0, b = 0;
                 let count = 0;
                 
-                // Sample pixels (every 10th pixel for performance)
                 for (let i = 0; i < data.length; i += 40) {
                     r += data[i];
                     g += data[i + 1];
@@ -793,13 +817,11 @@
                 g = Math.floor(g / count);
                 b = Math.floor(b / count);
                 
-                // Increase saturation for more vibrant glow
                 const max = Math.max(r, g, b);
                 const min = Math.min(r, g, b);
                 const saturation = max === 0 ? 0 : (max - min) / max;
                 
                 if (saturation < 0.3) {
-                    // Boost saturation if too dull
                     const boost = 1.5;
                     r = Math.min(255, Math.floor(r * boost));
                     g = Math.min(255, Math.floor(g * boost));
@@ -808,29 +830,68 @@
                 
                 return `rgb(${r}, ${g}, ${b})`;
             } catch (e) {
-                // CORS or other error - return default purple
                 return 'rgb(190, 68, 205)';
             }
         }
 
         function openLightbox(index) {
             currentLightboxIndex = index;
+            isOriginalQuality = true;
             const lightbox = document.getElementById('lightbox');
             const lightboxImg = document.getElementById('lightbox-img');
             const sourceImg = thumbnailImages[index];
+            const qualityBtn = document.getElementById('quality-btn');
             
-            lightboxImg.src = sourceImg.src;
+            // Display original quality by default
+            const originalSrc = sourceImg.getAttribute('data-original');
+            if (originalSrc) {
+                lightboxImg.src = originalSrc;
+                qualityBtn.textContent = 'View Compressed';
+            } else {
+                // Fallback to compressed if original not available
+                lightboxImg.src = sourceImg.getAttribute('data-src') || sourceImg.src;
+                qualityBtn.textContent = 'View Original Quality';
+                isOriginalQuality = false;
+            }
+            
             lightboxImg.alt = sourceImg.alt;
             lightbox.classList.add('active');
             document.body.style.overflow = 'hidden';
             
-            // Extract and apply color after image loads
+            // Preload compressed version in background
+            const compressedSrc = sourceImg.getAttribute('data-src');
+            if (compressedSrc) {
+                const img = new Image();
+                img.src = compressedSrc;
+            }
+            
             if (sourceImg.complete) {
                 applyGlowColor(sourceImg);
             } else {
                 sourceImg.addEventListener('load', function() {
                     applyGlowColor(sourceImg);
                 }, { once: true });
+            }
+        }
+
+        function toggleQuality() {
+            const lightboxImg = document.getElementById('lightbox-img');
+            const sourceImg = thumbnailImages[currentLightboxIndex];
+            const qualityBtn = document.getElementById('quality-btn');
+            
+            if (!isOriginalQuality) {
+                // Switch to original quality
+                const originalSrc = sourceImg.getAttribute('data-original');
+                if (originalSrc) {
+                    lightboxImg.src = originalSrc;
+                    qualityBtn.textContent = 'View Compressed';
+                    isOriginalQuality = true;
+                }
+            } else {
+                // Switch to compressed
+                lightboxImg.src = sourceImg.getAttribute('data-src') || sourceImg.src;
+                qualityBtn.textContent = 'View Original Quality';
+                isOriginalQuality = false;
             }
         }
 
@@ -843,6 +904,7 @@
         function closeLightbox() {
             document.getElementById('lightbox').classList.remove('active');
             document.body.style.overflow = '';
+            isOriginalQuality = false;
         }
 
         function changeLightboxImage(direction) {
@@ -850,12 +912,32 @@
             if (currentLightboxIndex < 0) currentLightboxIndex = thumbnailImages.length - 1;
             if (currentLightboxIndex >= thumbnailImages.length) currentLightboxIndex = 0;
             
+            isOriginalQuality = true;
             const lightboxImg = document.getElementById('lightbox-img');
             const sourceImg = thumbnailImages[currentLightboxIndex];
-            lightboxImg.src = sourceImg.src;
+            const qualityBtn = document.getElementById('quality-btn');
+            
+            // Display original quality by default
+            const originalSrc = sourceImg.getAttribute('data-original');
+            if (originalSrc) {
+                lightboxImg.src = originalSrc;
+                qualityBtn.textContent = 'View Compressed';
+            } else {
+                // Fallback to compressed
+                lightboxImg.src = sourceImg.getAttribute('data-src') || sourceImg.src;
+                qualityBtn.textContent = 'View Original Quality';
+                isOriginalQuality = false;
+            }
+            
             lightboxImg.alt = sourceImg.alt;
             
-            // Apply new color
+            // Preload compressed in background
+            const compressedSrc = sourceImg.getAttribute('data-src');
+            if (compressedSrc) {
+                const img = new Image();
+                img.src = compressedSrc;
+            }
+            
             if (sourceImg.complete) {
                 applyGlowColor(sourceImg);
             } else {
@@ -872,6 +954,7 @@
                 if (e.key === 'Escape') closeLightbox();
                 if (e.key === 'ArrowRight') changeLightboxImage(1);
                 if (e.key === 'ArrowLeft') changeLightboxImage(-1);
+                if (e.key === 'q' || e.key === 'Q') toggleQuality();
             }
         });
 
@@ -912,20 +995,57 @@
                 }
             });
 
-            // Lazy load images with skeleton loader
+            // Enhanced Lazy Loading with Intersection Observer & Skeleton Loader
             const images = document.querySelectorAll('.thumb-img');
-            images.forEach(img => {
-                img.addEventListener('load', function() {
-                    this.classList.add('loaded');
-                    this.parentElement.classList.add('loaded');
+            const imageObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        const thumbCard = img.closest('.thumb-card');
+                        
+                        // Load compressed version first
+                        const compressedSrc = img.getAttribute('data-src');
+                        if (compressedSrc) {
+                            img.src = compressedSrc;
+                            
+                            img.addEventListener('load', function() {
+                                this.classList.add('loaded');
+                                if (thumbCard) thumbCard.classList.add('loaded');
+                                
+                                // After compressed loads, preload original in background
+                                const originalSrc = this.getAttribute('data-original');
+                                if (originalSrc) {
+                                    const originalImg = new Image();
+                                    originalImg.src = originalSrc;
+                                }
+                            }, { once: true });
+                            
+                            img.addEventListener('error', function() {
+                                this.classList.add('loaded');
+                                if (thumbCard) thumbCard.classList.add('loaded');
+                            }, { once: true });
+                        }
+                        
+                        if (img.complete && img.naturalHeight > 0) {
+                            img.classList.add('loaded');
+                            if (thumbCard) thumbCard.classList.add('loaded');
+                            
+                            // Preload original in background
+                            const originalSrc = img.getAttribute('data-original');
+                            if (originalSrc) {
+                                const originalImg = new Image();
+                                originalImg.src = originalSrc;
+                            }
+                        }
+                        
+                        imageObserver.unobserve(img);
+                    }
                 });
-                
-                // Trigger load for cached images
-                if (img.complete) {
-                    img.classList.add('loaded');
-                    img.parentElement.classList.add('loaded');
-                }
+            }, {
+                rootMargin: '50px' // Start loading 50px before entering viewport
             });
+            
+            images.forEach(img => imageObserver.observe(img));
         });
 
         // View Counter
