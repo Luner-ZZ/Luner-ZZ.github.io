@@ -416,39 +416,38 @@
 
         /* Back to Top Button */
         .back-to-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: var(--accent);
-            border: none;
-            color: #000;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.5rem;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 15px rgba(190, 68, 205, 0.4);
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--accent);
+    border: none;
+    color: #000;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(190, 68, 205, 0.4);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px);
+}
         
         .back-to-top.visible {
             display: flex;
             animation: fadeInUp 0.3s ease;
         }
         
-        .back-to-top:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 20px rgba(190, 68, 205, 0.6);
-        }
-        
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .back-to-top.visible {
+    opacity: 1;
+    pointer-events: auto;  /* Enable clicks when visible */
+    transform: translateY(0);
+}
 
         footer {
             margin-top: 80px; 
@@ -717,7 +716,10 @@
                     <img class="steam-img" src="icons/steam.svg" alt="Steam Profile" width="32" height="32">
                 </a>
             </div>
-            <p class="copyright">© 2026 Luner. All rights reserved.</p>
+<p style="opacity: 0.6; font-size: 0.85rem; margin-top: 10px;">
+    👁️ Views: <span id="visit-count">Loading...</span>
+</p>
+<p class="copyright">© 2026 Luner. All rights reserved.</p>
         </div>
     </footer>
 
@@ -849,6 +851,15 @@
                 }
             });
         });
+fetch('https://api.countapi.xyz/hit/luner-zz.github.io/visits')
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById('visit-count').textContent = data.value;
+    })
+    .catch(() => {
+        document.getElementById('visit-count').textContent = 'N/A';
+    });
     </script>
 </body>
 </html>
+
