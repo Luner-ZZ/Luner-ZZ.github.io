@@ -2,18 +2,16 @@ import React, { useEffect, useState, useRef } from 'react';
 
 const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images }) => {
     const [isOriginal, setIsOriginal] = useState(false);
+    const [glowColor, setGlowColor] = useState('rgb(190, 68, 205)');
     const imgRef = useRef(null);
+
+    useEffect(() => {
+        setGlowColor('rgb(190, 68, 205)');
+    }, [currentIndex]);
 
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden';
-            // Reset quality when opening a new image? Or keep preference? 
-            // Original logic reset it on close, but persisted during navigation?
-            // Original: openLightbox -> isOriginalQuality = true (wait, code said: isOriginalQuality = true; ... then fallback handling)
-            // Actually original logic: openLightbox sets isOriginalQuality = true initially but checks if original exists.
-            // Let's default to false (compressed) or true depending on user preference?
-            // Code says: function openLightbox(index) { isOriginalQuality = true; ... if(originalSrc) ... else isOriginalQuality = false }
-            // So it defaults to high quality if available.
             setIsOriginal(true);
         } else {
             document.body.style.overflow = '';
@@ -37,24 +35,61 @@ const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images }) => 
     if (!isOpen) return null;
 
     const currentImage = images[currentIndex];
-    // Determine source based on quality toggle
-    // original logic: if isOriginal && data-original, use it. else use compressed.
     const imgSrc = (isOriginal && currentImage.original) ? currentImage.original : currentImage.webp;
 
     const toggleQuality = () => {
         setIsOriginal(!isOriginal);
     };
 
-    const getDominantColor = () => {
-        // Complex logic to extract color on client side canvas.
-        // For React, we might want to skip this or implement it in a useEffect on image load
-        // For now, let's keep it simple or port the color logic if requested.
-        // The original code uses a canvas to get average color for glow.
-        return 'rgb(190, 68, 205)'; // Fallback default
+    const getDominantColor = (imgElement) => {
+        try {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = imgElement.naturalWidth || imgElement.width;
+            canvas.height = imgElement.naturalHeight || imgElement.height;
+
+            ctx.drawImage(imgElement, 0, 0, canvas.width, canvas.height);
+
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imageData.data;
+            let r = 0, g = 0, b = 0;
+            let count = 0;
+
+            for (let i = 0; i < data.length; i += 40) {
+                r += data[i];
+                g += data[i + 1];
+                b += data[i + 2];
+                count++;
+            }
+
+            r = Math.floor(r / count);
+            g = Math.floor(g / count);
+            b = Math.floor(b / count);
+
+            const max = Math.max(r, g, b);
+            const min = Math.min(r, g, b);
+            const saturation = max === 0 ? 0 : (max - min) / max;
+
+            if (saturation < 0.3) {
+                const boost = 1.5;
+                r = Math.min(255, Math.floor(r * boost));
+                g = Math.min(255, Math.floor(g * boost));
+                b = Math.min(255, Math.floor(b * boost));
+            }
+
+            return `rgb(${r}, ${g}, ${b})`;
+        } catch (e) {
+            return 'rgb(190, 68, 205)';
+        }
+    };
+
+    const handleImageLoad = (e) => {
+        const color = getDominantColor(e.target);
+        setGlowColor(color);
     };
 
     return (
-        <div className={`lightbox active`} onClick={(e) => e.target.className.includes('lightbox') && onClose()}>
+        <div className={`lightbox active`} onClick={(e) => e.target === e.currentTarget && onClose()}>
             <button className="lightbox-close" onClick={onClose} aria-label="Close lightbox">×</button>
             <button className="quality-toggle" onClick={toggleQuality}>
                 {isOriginal ? 'View Compressed' : 'View Original Quality'}
@@ -68,7 +103,9 @@ const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images }) => 
                     className="lightbox-img"
                     src={imgSrc}
                     alt={currentImage.alt}
-                    style={{ boxShadow: `0 0 50px ${getDominantColor()}, 0 0 100px ${getDominantColor()}` }}
+                    crossOrigin="anonymous"
+                    onLoad={handleImageLoad}
+                    style={{ boxShadow: `0 0 50px ${glowColor}, 0 0 100px ${glowColor}` }}
                 />
             </div>
 

@@ -12,6 +12,34 @@ function App() {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  // Global click listener for Text Selection capability
+  React.useEffect(() => {
+    let textSelectable = false;
+    const handleClick = (e) => {
+      // If click is NOT on an interactive element, allow selection
+      if (!textSelectable && !e.target.closest('.nav-btn, .thumb-card, .lightbox, .back-to-top, a, button')) {
+        document.body.classList.add('text-selectable');
+        textSelectable = true;
+      }
+    };
+
+    const handleDblClick = (e) => {
+      if (e.target === document.body || e.target.tagName === 'HTML' || !e.target.closest('.text-selectable')) {
+        document.body.classList.remove('text-selectable');
+        textSelectable = false;
+        window.getSelection().removeAllRanges();
+      }
+    };
+
+    document.body.addEventListener('click', handleClick);
+    document.body.addEventListener('dblclick', handleDblClick);
+
+    return () => {
+      document.body.removeEventListener('click', handleClick);
+      document.body.removeEventListener('dblclick', handleDblClick);
+    };
+  }, []);
+
   // Data for thumbnails (shared with ThumbnailSection and Lightbox)
   const thumbnails = [
     {
