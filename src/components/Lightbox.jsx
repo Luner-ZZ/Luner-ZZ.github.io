@@ -109,7 +109,9 @@ const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images, cache
         <div className={`lightbox active`} onClick={(e) => e.target === e.currentTarget && onClose()}>
             <button className="lightbox-close" onClick={(e) => { e.stopPropagation(); onClose(); }} aria-label="Close lightbox">×</button>
             <button className="quality-toggle" onClick={(e) => { e.stopPropagation(); toggleQuality(); }}>
-                {isOriginal ? 'View Compressed' : 'View Original Quality'}
+                {isOriginal
+                    ? (highResLoaded ? 'View Compressed' : 'Loading Original...')
+                    : 'View Original Quality'}
             </button>
             <button className="lightbox-nav lightbox-prev" onClick={(e) => { e.stopPropagation(); onPrev(); }} aria-label="Previous image">‹</button>
 
