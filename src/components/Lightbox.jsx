@@ -110,6 +110,7 @@ const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images, cache
 
             <div className="lightbox-content">
                 <img
+                    key={currentIndex}
                     id="lightbox-img"
                     className="lightbox-img"
                     src={imgSrc}
