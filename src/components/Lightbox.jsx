@@ -17,7 +17,7 @@ const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images, cache
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden';
-            setIsOriginal(true);
+            setIsOriginal(false); // Default to compressed for speed
         }
 
         // Cleanup function ensures scroll is restored even if component unmounts
@@ -25,6 +25,11 @@ const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images, cache
             document.body.style.overflow = '';
         };
     }, [isOpen]);
+
+    // Reset to compressed when navigating to a new image
+    useEffect(() => {
+        setIsOriginal(false);
+    }, [currentIndex]);
 
     useEffect(() => {
         const handleKeyDown = (e) => {
@@ -117,7 +122,14 @@ const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images, cache
                     alt={currentImage.alt}
                     crossOrigin="anonymous"
                     onLoad={handleImageLoad}
-                    style={{ boxShadow: `0 0 50px ${glowColor}, 0 0 100px ${glowColor}` }}
+                    style={{
+                        boxShadow: `0 0 50px ${glowColor}, 0 0 100px ${glowColor}`,
+                        // Use webp as background placeholder
+                        backgroundImage: `url(${currentImage.webp})`,
+                        backgroundSize: 'contain',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'center'
+                    }}
                 />
             </div>
 
