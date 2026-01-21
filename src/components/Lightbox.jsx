@@ -1,13 +1,19 @@
 import React, { useEffect, useState, useRef } from 'react';
 
-const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images }) => {
+const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images, cachedColors, onColorCalculated }) => {
     const [isOriginal, setIsOriginal] = useState(false);
+    // Initialize with cached color if available, otherwise default
     const [glowColor, setGlowColor] = useState('rgb(190, 68, 205)');
     const imgRef = useRef(null);
 
+    // Update local glow when currentIndex changes
     useEffect(() => {
-        setGlowColor('rgb(190, 68, 205)');
-    }, [currentIndex]);
+        if (cachedColors[currentIndex]) {
+            setGlowColor(cachedColors[currentIndex]);
+        } else {
+            setGlowColor('rgb(190, 68, 205)');
+        }
+    }, [currentIndex, cachedColors]);
 
     useEffect(() => {
         if (isOpen) {
@@ -84,8 +90,13 @@ const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images }) => 
     };
 
     const handleImageLoad = (e) => {
+        // If we already have a cached color for this index, don't recalculate
+        // This prevents the "switch" effect when toggling quality
+        if (cachedColors[currentIndex]) return;
+
         const color = getDominantColor(e.target);
         setGlowColor(color);
+        onColorCalculated(currentIndex, color);
     };
 
     return (

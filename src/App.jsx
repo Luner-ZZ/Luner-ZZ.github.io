@@ -11,6 +11,11 @@ function App() {
   const [activeTab, setActiveTab] = useState('videos');
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [cachedColors, setCachedColors] = useState({});
+
+  const updateColorCache = (index, color) => {
+    setCachedColors(prev => ({ ...prev, [index]: color }));
+  };
 
   // Global click listener for Text Selection capability
   React.useEffect(() => {
@@ -95,6 +100,8 @@ function App() {
         onNext={nextImage}
         onPrev={prevImage}
         images={thumbnails}
+        cachedColors={cachedColors}
+        onColorCalculated={updateColorCache}
       />
 
       <BackToTop />
