@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import Header from './components/Header';
-import VideoSection from './components/VideoSection';
-import ThumbnailSection from './components/ThumbnailSection';
-import Lightbox from './components/Lightbox';
 import Footer from './components/Footer';
 import BackToTop from './components/BackToTop';
 import './index.css'; // Global styles
+
+// Lazy load heavy components
+const VideoSection = React.lazy(() => import('./components/VideoSection'));
+const ThumbnailSection = React.lazy(() => import('./components/ThumbnailSection'));
+const Lightbox = React.lazy(() => import('./components/Lightbox'));
 
 function App() {
   const [activeTab, setActiveTab] = useState('videos');
@@ -90,19 +92,25 @@ function App() {
     <>
       <Header activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      {activeTab === 'videos' && <VideoSection />}
-      {activeTab === 'thumbs' && <ThumbnailSection openLightbox={openLightbox} />}
+      <Suspense fallback={<div style={{ minHeight: '50vh' }}></div>}>
+        {activeTab === 'videos' && <VideoSection />}
+        {activeTab === 'thumbs' && <ThumbnailSection openLightbox={openLightbox} />}
+      </Suspense>
 
-      <Lightbox
-        isOpen={lightboxOpen}
-        currentIndex={currentImageIndex}
-        onClose={closeLightbox}
-        onNext={nextImage}
-        onPrev={prevImage}
-        images={thumbnails}
-        cachedColors={cachedColors}
-        onColorCalculated={updateColorCache}
-      />
+      <Suspense fallback={null}>
+        {lightboxOpen && (
+          <Lightbox
+            isOpen={lightboxOpen}
+            currentIndex={currentImageIndex}
+            onClose={closeLightbox}
+            onNext={nextImage}
+            onPrev={prevImage}
+            images={thumbnails}
+            cachedColors={cachedColors}
+            onColorCalculated={updateColorCache}
+          />
+        )}
+      </Suspense>
 
       <BackToTop />
       <Footer />
