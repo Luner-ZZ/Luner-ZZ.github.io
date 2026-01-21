@@ -102,11 +102,11 @@ const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images, cache
 
     return (
         <div className={`lightbox active`} onClick={(e) => e.target === e.currentTarget && onClose()}>
-            <button className="lightbox-close" onClick={onClose} aria-label="Close lightbox">×</button>
-            <button className="quality-toggle" onClick={toggleQuality}>
+            <button className="lightbox-close" onClick={(e) => { e.stopPropagation(); onClose(); }} aria-label="Close lightbox">×</button>
+            <button className="quality-toggle" onClick={(e) => { e.stopPropagation(); toggleQuality(); }}>
                 {isOriginal ? 'View Compressed' : 'View Original Quality'}
             </button>
-            <button className="lightbox-nav lightbox-prev" onClick={onPrev} aria-label="Previous image">‹</button>
+            <button className="lightbox-nav lightbox-prev" onClick={(e) => { e.stopPropagation(); onPrev(); }} aria-label="Previous image">‹</button>
 
             <div className="lightbox-content">
                 <img
@@ -120,7 +120,7 @@ const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images, cache
                 />
             </div>
 
-            <button className="lightbox-nav lightbox-next" onClick={onNext} aria-label="Next image">›</button>
+            <button className="lightbox-nav lightbox-next" onClick={(e) => { e.stopPropagation(); onNext(); }} aria-label="Next image">›</button>
         </div>
     );
 };

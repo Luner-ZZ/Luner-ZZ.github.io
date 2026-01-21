@@ -1,21 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 const Footer = () => {
-    const [views, setViews] = useState('Loading...');
 
-    useEffect(() => {
-        let isMounted = true;
-        fetch('https://api.countapi.xyz/hit/luner-zz.github.io/visits')
-            .then((res) => res.json())
-            .then((data) => {
-                if (isMounted) setViews(data.value);
-            })
-            .catch(() => {
-                if (isMounted) setViews('N/A');
-            });
-
-        return () => { isMounted = false; };
-    }, []);
 
     return (
         <footer>
@@ -97,9 +83,6 @@ const Footer = () => {
                         />
                     </a>
                 </div>
-                <p style={{ opacity: 0.6, fontSize: '0.85rem', marginTop: '10px' }}>
-                    👁️ Views: <span id="visit-count">{views}</span>
-                </p>
                 <p className="copyright">© 2026 Luner. All rights reserved.</p>
             </div>
         </footer>

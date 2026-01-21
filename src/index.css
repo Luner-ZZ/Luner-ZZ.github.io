@@ -519,6 +519,7 @@ iframe {
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     transform: translateZ(0);
+    user-select: none;
 }
 
 .lightbox-nav:hover {
