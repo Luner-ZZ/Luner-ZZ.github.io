@@ -449,7 +449,7 @@ iframe {
 /* Quality toggle button in lightbox */
 .quality-toggle {
     position: absolute;
-    bottom: 20px;
+    top: 20px;
     left: 50%;
     transform: translateX(-50%);
     background: rgba(190, 68, 205, 0.3);
