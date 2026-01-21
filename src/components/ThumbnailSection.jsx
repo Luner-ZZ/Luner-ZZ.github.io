@@ -1,28 +1,7 @@
 import React, { useEffect } from 'react';
 
-const ThumbnailSection = ({ openLightbox }) => {
-    const thumbnails = [
-        {
-            webp: '/thumbnails/thumb1.webp',
-            original: '/thumbnails/thumb1.png',
-            alt: 'Professional gaming thumbnail with vibrant effects'
-        },
-        {
-            webp: '/thumbnails/thumb2.webp',
-            original: '/thumbnails/thumb2.png',
-            alt: 'Eye-catching YouTube thumbnail design'
-        },
-        {
-            webp: '/thumbnails/thumb3.webp',
-            original: '/thumbnails/thumb3.png',
-            alt: 'Creative thumbnail with bold typography'
-        },
-        {
-            webp: '/thumbnails/thumb4.webp',
-            original: '/thumbnails/thumb4.png',
-            alt: 'Modern thumbnail design with gradient overlays'
-        }
-    ];
+const ThumbnailSection = ({ openLightbox, thumbnails }) => {
+    // Thumbnails data is passed via props to maintain single source of truth
 
     useEffect(() => {
         // Re-implement intersection observer for lazy loading logic here if needed,

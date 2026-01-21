@@ -94,7 +94,7 @@ function App() {
 
       <Suspense fallback={<div style={{ minHeight: '50vh' }}></div>}>
         {activeTab === 'videos' && <VideoSection />}
-        {activeTab === 'thumbs' && <ThumbnailSection openLightbox={openLightbox} />}
+        {activeTab === 'thumbs' && <ThumbnailSection openLightbox={openLightbox} thumbnails={thumbnails} />}
       </Suspense>
 
       <Suspense fallback={null}>

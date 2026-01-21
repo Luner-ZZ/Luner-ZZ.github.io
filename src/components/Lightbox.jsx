@@ -4,7 +4,6 @@ const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images, cache
     const [isOriginal, setIsOriginal] = useState(false);
     // Initialize with cached color if available, otherwise default
     const [glowColor, setGlowColor] = useState('rgb(190, 68, 205)');
-    const imgRef = useRef(null);
 
     // Update local glow when currentIndex changes
     useEffect(() => {
@@ -19,11 +18,13 @@ const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images, cache
         if (isOpen) {
             document.body.style.overflow = 'hidden';
             setIsOriginal(true);
-        } else {
-            document.body.style.overflow = '';
-            setIsOriginal(false);
         }
-    }, [isOpen, currentIndex]);
+
+        // Cleanup function ensures scroll is restored even if component unmounts
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, [isOpen]);
 
     useEffect(() => {
         const handleKeyDown = (e) => {
@@ -38,7 +39,7 @@ const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images, cache
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [isOpen, onNext, onPrev, onClose]);
 
-    if (!isOpen) return null;
+    if (!isOpen || !images || !images[currentIndex]) return null;
 
     const currentImage = images[currentIndex];
     const imgSrc = (isOriginal && currentImage.original) ? currentImage.original : currentImage.webp;
@@ -109,7 +110,6 @@ const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images, cache
 
             <div className="lightbox-content">
                 <img
-                    ref={imgRef}
                     id="lightbox-img"
                     className="lightbox-img"
                     src={imgSrc}

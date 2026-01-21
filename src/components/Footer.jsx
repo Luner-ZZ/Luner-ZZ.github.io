@@ -4,14 +4,17 @@ const Footer = () => {
     const [views, setViews] = useState('Loading...');
 
     useEffect(() => {
+        let isMounted = true;
         fetch('https://api.countapi.xyz/hit/luner-zz.github.io/visits')
             .then((res) => res.json())
             .then((data) => {
-                setViews(data.value);
+                if (isMounted) setViews(data.value);
             })
             .catch(() => {
-                setViews('N/A');
+                if (isMounted) setViews('N/A');
             });
+
+        return () => { isMounted = false; };
     }, []);
 
     return (
