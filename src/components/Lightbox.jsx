@@ -1,9 +1,23 @@
 import React, { useEffect, useState, useRef } from 'react';
 
 const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images, cachedColors, onColorCalculated }) => {
-    const [isOriginal, setIsOriginal] = useState(false);
+    const [isOriginal, setIsOriginal] = useState(true); // Default: Try to load Original
+    const [highResLoaded, setHighResLoaded] = useState(false);
     // Initialize with cached color if available, otherwise default
     const [glowColor, setGlowColor] = useState('rgb(190, 68, 205)');
+
+    // Reset high res loaded state and preload image when index changes
+    useEffect(() => {
+        setHighResLoaded(false);
+
+        if (images && images[currentIndex] && images[currentIndex].original) {
+            const img = new Image();
+            img.src = images[currentIndex].original;
+            img.onload = () => {
+                setHighResLoaded(true);
+            };
+        }
+    }, [currentIndex, images]);
 
     // Update local glow when currentIndex changes
     useEffect(() => {
@@ -17,7 +31,8 @@ const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images, cache
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden';
-            setIsOriginal(false); // Default to compressed for speed
+            // We DO NOT override isOriginal here anymore. 
+            // We want it to stay TRUE so it auto-loads.
         }
 
         // Cleanup function ensures scroll is restored even if component unmounts
@@ -26,10 +41,7 @@ const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images, cache
         };
     }, [isOpen]);
 
-    // Reset to compressed when navigating to a new image
-    useEffect(() => {
-        setIsOriginal(false);
-    }, [currentIndex]);
+
 
     useEffect(() => {
         const handleKeyDown = (e) => {
@@ -47,10 +59,13 @@ const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images, cache
     if (!isOpen || !images || !images[currentIndex]) return null;
 
     const currentImage = images[currentIndex];
-    const imgSrc = (isOriginal && currentImage.original) ? currentImage.original : currentImage.webp;
+
+    // LOGIC: Show Original IF (User wants Original + It is Loaded). Otherwise WebP. (Progressive Upgrade)
+    const imgSrc = (isOriginal && highResLoaded && currentImage.original) ? currentImage.original : currentImage.webp;
 
     const toggleQuality = () => {
         setIsOriginal(!isOriginal);
+        // If toggling ON, logic will wait for highResLoaded to switch
     };
 
     const getDominantColor = (imgElement) => {
