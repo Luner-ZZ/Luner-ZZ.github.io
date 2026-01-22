@@ -52,22 +52,26 @@ function App() {
     {
       webp: '/thumbnails/thumb1.webp',
       original: '/thumbnails/thumb1.png',
-      alt: 'Professional gaming thumbnail with vibrant effects'
+      alt: 'Professional gaming thumbnail with vibrant effects',
+      tags: ['Photoshop']
     },
     {
       webp: '/thumbnails/thumb2.webp',
       original: '/thumbnails/thumb2.png',
-      alt: 'Eye-catching YouTube thumbnail design'
+      alt: 'Eye-catching YouTube thumbnail design',
+      tags: ['Photoshop']
     },
     {
       webp: '/thumbnails/thumb3.webp',
       original: '/thumbnails/thumb3.png',
-      alt: 'Creative thumbnail with bold typography'
+      alt: 'Creative thumbnail with bold typography',
+      tags: ['Photoshop']
     },
     {
       webp: '/thumbnails/thumb4.webp',
       original: '/thumbnails/thumb4.png',
-      alt: 'Modern thumbnail design with gradient overlays'
+      alt: 'Modern thumbnail design with gradient overlays',
+      tags: ['Photoshop']
     }
   ];
 

@@ -59,6 +59,13 @@ const ThumbnailSection = ({ openLightbox, thumbnails }) => {
                                 <circle cx="12" cy="12" r="3"></circle>
                             </svg>
                         </div>
+                        {thumb.tags && thumb.tags.length > 0 && (
+                            <div className="thumb-tags">
+                                {thumb.tags.map((tag, tagIndex) => (
+                                    <span key={tagIndex} className="thumb-tag">{tag}</span>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 ))}
             </div>
