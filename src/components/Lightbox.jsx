@@ -140,7 +140,6 @@ const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images, cache
                     crossOrigin="anonymous"
                     onLoad={handleImageLoad}
                     style={{
-                        boxShadow: `0 0 50px ${glowColor}, 0 0 100px ${glowColor}`,
                         // Use webp as background placeholder
                         backgroundImage: `url(${currentImage.webp})`,
                         backgroundSize: 'contain',
