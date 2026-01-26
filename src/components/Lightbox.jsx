@@ -8,15 +8,18 @@ const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images, cache
 
     // Reset high res loaded state and preload image when index changes
     useEffect(() => {
+        let isActive = true; // Prevents race conditions if index changes rapidly
         setHighResLoaded(false);
 
         if (images && images[currentIndex] && images[currentIndex].original) {
             const img = new Image();
             img.src = images[currentIndex].original;
             img.onload = () => {
-                setHighResLoaded(true);
+                if (isActive) setHighResLoaded(true);
             };
         }
+        
+        return () => { isActive = false; };
     }, [currentIndex, images]);
 
     // Update local glow when currentIndex changes
