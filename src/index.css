@@ -494,6 +494,13 @@ iframe {
     color: #000;
 }
 
+.quality-toggle:disabled {
+    opacity: 0.6;
+    cursor: default;
+    pointer-events: none;
+    border-color: rgba(190, 68, 205, 0.3);
+}
+
 .lightbox-close {
     position: absolute;
     top: 20px;

@@ -18,7 +18,7 @@ const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images, cache
                 if (isActive) setHighResLoaded(true);
             };
         }
-        
+
         return () => { isActive = false; };
     }, [currentIndex, images]);
 
@@ -126,7 +126,11 @@ const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images, cache
     return (
         <div className={`lightbox active`} onClick={(e) => e.target === e.currentTarget && onClose()}>
             <button className="lightbox-close" onClick={(e) => { e.stopPropagation(); onClose(); }} aria-label="Close lightbox">×</button>
-            <button className="quality-toggle" onClick={(e) => { e.stopPropagation(); toggleQuality(); }}>
+            <button
+                className="quality-toggle"
+                onClick={(e) => { e.stopPropagation(); toggleQuality(); }}
+                disabled={isOriginal && !highResLoaded}
+            >
                 {isOriginal
                     ? (highResLoaded ? 'View Compressed' : 'Loading Original...')
                     : 'View Original Quality'}
