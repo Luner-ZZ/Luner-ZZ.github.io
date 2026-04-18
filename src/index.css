@@ -329,6 +329,8 @@ h1 {
     border-radius: 16px;
     aspect-ratio: 16 / 9;
     background: #000;
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+    transform: translateZ(0);
 }
 
 iframe {
@@ -347,6 +349,8 @@ iframe {
     aspect-ratio: 16 / 9;
     cursor: pointer;
     background: rgba(0, 0, 0, 0.3);
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+    transform: translateZ(0);
 }
 
 /* Blur-up effect for loading */
