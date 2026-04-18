@@ -1,36 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 const ThumbnailSection = ({ openLightbox, thumbnails }) => {
     // Thumbnails data is passed via props to maintain single source of truth
 
-    useEffect(() => {
-        // Re-implement intersection observer for lazy loading logic here if needed,
-        // or rely on native loading="lazy" and the CSS blur-up which we will support.
-
-        // Simple improved lazy loader matching the original logic
-        const imageObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    const thumbCard = img.closest('.thumb-card');
-
-                    const compressedSrc = img.getAttribute('data-src');
-                    if (compressedSrc) {
-                        img.src = compressedSrc;
-                        img.onload = () => {
-                            img.classList.add('loaded');
-                            if (thumbCard) thumbCard.classList.add('loaded');
-                        };
-                    }
-                    imageObserver.unobserve(img);
-                }
-            });
-        }, { rootMargin: '50px' });
-
-        document.querySelectorAll('.thumb-img').forEach(img => imageObserver.observe(img));
-
-        return () => imageObserver.disconnect();
-    }, []);
+    const handleImageLoad = (e) => {
+        const img = e.target;
+        const thumbCard = img.closest('.thumb-card');
+        img.classList.add('loaded');
+        if (thumbCard) thumbCard.classList.add('loaded');
+    };
 
     return (
         <div className="tab-content active-content">
@@ -46,11 +24,10 @@ const ThumbnailSection = ({ openLightbox, thumbnails }) => {
                             <source srcSet={thumb.webp} type="image/webp" />
                             <img
                                 className="thumb-img"
-                                data-src={thumb.webp}
-                                data-original={thumb.original}
-                                src={thumb.webp} // Fallback or placeholder
+                                src={thumb.webp}
                                 alt={thumb.alt}
                                 loading="lazy"
+                                onLoad={handleImageLoad}
                             />
                         </picture>
                         <div className="thumb-overlay">
