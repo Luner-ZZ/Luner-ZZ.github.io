@@ -4,10 +4,7 @@ const DEFAULT_GLOW = 'rgb(190, 68, 205)';
 
 const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images, cachedColors, onColorCalculated }) => {
     const [isOriginal, setIsOriginal] = useState(true); // Default: Try to load Original
-    const [highResLoaded, setHighResLoaded] = useState(false);
-    // Track which index the highResLoaded state applies to, so we can
-    // reset it derivatively when currentIndex changes without calling
-    // setState synchronously inside an effect.
+    // Track which index has been fully preloaded
     const [preloadedIndex, setPreloadedIndex] = useState(-1);
 
     // Derive glow color from cachedColors prop — no local state needed
@@ -22,7 +19,7 @@ const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images, cache
     }, []);
 
     // If the image index changed, the old preload is no longer valid
-    const isHighResReady = highResLoaded && preloadedIndex === currentIndex;
+    const isHighResReady = preloadedIndex === currentIndex;
 
     // Preload high-res image when index changes
     useEffect(() => {
@@ -34,7 +31,6 @@ const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images, cache
             img.onload = () => {
                 if (isActive) {
                     setPreloadedIndex(currentIndex);
-                    setHighResLoaded(true);
                 }
             };
         }
