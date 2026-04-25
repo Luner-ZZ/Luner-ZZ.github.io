@@ -1,5 +1,3 @@
-import React from 'react';
-
 const ThumbnailSection = ({ openLightbox, thumbnails }) => {
     // Thumbnails data is passed via props to maintain single source of truth
 
@@ -17,7 +15,7 @@ const ThumbnailSection = ({ openLightbox, thumbnails }) => {
                 {thumbnails.map((thumb, index) => (
                     <div
                         className="thumb-card"
-                        key={index}
+                        key={thumb.id}
                         onClick={() => openLightbox(index)}
                     >
                         <picture>

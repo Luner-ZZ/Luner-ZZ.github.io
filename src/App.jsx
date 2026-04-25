@@ -1,13 +1,45 @@
-import React, { useState, Suspense } from 'react';
+import { useState, useCallback, useEffect, lazy, Suspense } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import BackToTop from './components/BackToTop';
 import './index.css'; // Global styles
 
 // Lazy load heavy components
-const VideoSection = React.lazy(() => import('./components/VideoSection'));
-const ThumbnailSection = React.lazy(() => import('./components/ThumbnailSection'));
-const Lightbox = React.lazy(() => import('./components/Lightbox'));
+const VideoSection = lazy(() => import('./components/VideoSection'));
+const ThumbnailSection = lazy(() => import('./components/ThumbnailSection'));
+const Lightbox = lazy(() => import('./components/Lightbox'));
+
+// Static data hoisted outside component to avoid recreation on every render
+const thumbnails = [
+  {
+    id: 'thumb1',
+    webp: '/thumbnails/thumb1.webp',
+    original: '/thumbnails/thumb1.png',
+    alt: 'Professional gaming thumbnail with vibrant effects',
+    tags: ['Photoshop']
+  },
+  {
+    id: 'thumb2',
+    webp: '/thumbnails/thumb2.webp',
+    original: '/thumbnails/thumb2.png',
+    alt: 'Eye-catching YouTube thumbnail design',
+    tags: ['Photoshop']
+  },
+  {
+    id: 'thumb3',
+    webp: '/thumbnails/thumb3.webp',
+    original: '/thumbnails/thumb3.png',
+    alt: 'Creative thumbnail with bold typography',
+    tags: ['Photoshop']
+  },
+  {
+    id: 'thumb4',
+    webp: '/thumbnails/thumb4.webp',
+    original: '/thumbnails/thumb4.png',
+    alt: 'Modern thumbnail design with gradient overlays',
+    tags: ['Photoshop']
+  }
+];
 
 function App() {
   const [activeTab, setActiveTab] = useState('videos');
@@ -15,12 +47,12 @@ function App() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [cachedColors, setCachedColors] = useState({});
 
-  const updateColorCache = (index, color) => {
+  const updateColorCache = useCallback((index, color) => {
     setCachedColors(prev => ({ ...prev, [index]: color }));
-  };
+  }, []);
 
   // Global click listener for Text Selection capability
-  React.useEffect(() => {
+  useEffect(() => {
     let textSelectable = false;
     const handleClick = (e) => {
       // If click is NOT on an interactive element, allow selection
@@ -47,50 +79,22 @@ function App() {
     };
   }, []);
 
-  // Data for thumbnails (shared with ThumbnailSection and Lightbox)
-  const thumbnails = [
-    {
-      webp: '/thumbnails/thumb1.webp',
-      original: '/thumbnails/thumb1.png',
-      alt: 'Professional gaming thumbnail with vibrant effects',
-      tags: ['Photoshop']
-    },
-    {
-      webp: '/thumbnails/thumb2.webp',
-      original: '/thumbnails/thumb2.png',
-      alt: 'Eye-catching YouTube thumbnail design',
-      tags: ['Photoshop']
-    },
-    {
-      webp: '/thumbnails/thumb3.webp',
-      original: '/thumbnails/thumb3.png',
-      alt: 'Creative thumbnail with bold typography',
-      tags: ['Photoshop']
-    },
-    {
-      webp: '/thumbnails/thumb4.webp',
-      original: '/thumbnails/thumb4.png',
-      alt: 'Modern thumbnail design with gradient overlays',
-      tags: ['Photoshop']
-    }
-  ];
-
-  const openLightbox = (index) => {
+  const openLightbox = useCallback((index) => {
     setCurrentImageIndex(index);
     setLightboxOpen(true);
-  };
+  }, []);
 
-  const closeLightbox = () => {
+  const closeLightbox = useCallback(() => {
     setLightboxOpen(false);
-  };
+  }, []);
 
-  const nextImage = () => {
+  const nextImage = useCallback(() => {
     setCurrentImageIndex((prev) => (prev + 1) % thumbnails.length);
-  };
+  }, []);
 
-  const prevImage = () => {
+  const prevImage = useCallback(() => {
     setCurrentImageIndex((prev) => (prev - 1 + thumbnails.length) % thumbnails.length);
-  };
+  }, []);
 
   return (
     <>

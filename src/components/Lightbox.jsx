@@ -1,35 +1,46 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
+
+const DEFAULT_GLOW = 'rgb(190, 68, 205)';
 
 const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images, cachedColors, onColorCalculated }) => {
     const [isOriginal, setIsOriginal] = useState(true); // Default: Try to load Original
     const [highResLoaded, setHighResLoaded] = useState(false);
-    // Initialize with cached color if available, otherwise default
-    const [glowColor, setGlowColor] = useState('rgb(190, 68, 205)');
+    // Track which index the highResLoaded state applies to, so we can
+    // reset it derivatively when currentIndex changes without calling
+    // setState synchronously inside an effect.
+    const [preloadedIndex, setPreloadedIndex] = useState(-1);
 
-    // Reset high res loaded state and preload image when index changes
+    // Derive glow color from cachedColors prop — no local state needed
+    const glowColor = useMemo(() => {
+        return cachedColors[currentIndex] || DEFAULT_GLOW;
+    }, [currentIndex, cachedColors]);
+
+    // Toggle quality must be defined before the keydown effect that references it
+    const toggleQuality = useCallback(() => {
+        setIsOriginal(prev => !prev);
+        // If toggling ON, logic will wait for highResLoaded to switch
+    }, []);
+
+    // If the image index changed, the old preload is no longer valid
+    const isHighResReady = highResLoaded && preloadedIndex === currentIndex;
+
+    // Preload high-res image when index changes
     useEffect(() => {
         let isActive = true; // Prevents race conditions if index changes rapidly
-        setHighResLoaded(false);
 
         if (images && images[currentIndex] && images[currentIndex].original) {
             const img = new Image();
             img.src = images[currentIndex].original;
             img.onload = () => {
-                if (isActive) setHighResLoaded(true);
+                if (isActive) {
+                    setPreloadedIndex(currentIndex);
+                    setHighResLoaded(true);
+                }
             };
         }
 
         return () => { isActive = false; };
     }, [currentIndex, images]);
-
-    // Update local glow when currentIndex changes
-    useEffect(() => {
-        if (cachedColors[currentIndex]) {
-            setGlowColor(cachedColors[currentIndex]);
-        } else {
-            setGlowColor('rgb(190, 68, 205)');
-        }
-    }, [currentIndex, cachedColors]);
 
     useEffect(() => {
         if (isOpen) {
@@ -44,8 +55,6 @@ const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images, cache
         };
     }, [isOpen]);
 
-
-
     useEffect(() => {
         const handleKeyDown = (e) => {
             if (!isOpen) return;
@@ -57,35 +66,32 @@ const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images, cache
 
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [isOpen, onNext, onPrev, onClose]);
+    }, [isOpen, onNext, onPrev, onClose, toggleQuality]);
 
     if (!isOpen || !images || !images[currentIndex]) return null;
 
     const currentImage = images[currentIndex];
 
     // LOGIC: Show Original IF (User wants Original + It is Loaded). Otherwise WebP. (Progressive Upgrade)
-    const imgSrc = (isOriginal && highResLoaded && currentImage.original) ? currentImage.original : currentImage.webp;
-
-    const toggleQuality = () => {
-        setIsOriginal(!isOriginal);
-        // If toggling ON, logic will wait for highResLoaded to switch
-    };
+    const imgSrc = (isOriginal && isHighResReady && currentImage.original) ? currentImage.original : currentImage.webp;
 
     const getDominantColor = (imgElement) => {
         try {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
-            canvas.width = imgElement.naturalWidth || imgElement.width;
-            canvas.height = imgElement.naturalHeight || imgElement.height;
+            // Downscale to tiny canvas — same visual result, ~99.7% less memory
+            canvas.width = 50;
+            canvas.height = 50;
 
-            ctx.drawImage(imgElement, 0, 0, canvas.width, canvas.height);
+            ctx.drawImage(imgElement, 0, 0, 50, 50);
 
-            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const imageData = ctx.getImageData(0, 0, 50, 50);
             const data = imageData.data;
             let r = 0, g = 0, b = 0;
             let count = 0;
 
-            for (let i = 0; i < data.length; i += 40) {
+            // Sample every 4th pixel (still plenty at 50x50)
+            for (let i = 0; i < data.length; i += 16) {
                 r += data[i];
                 g += data[i + 1];
                 b += data[i + 2];
@@ -108,8 +114,9 @@ const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images, cache
             }
 
             return `rgb(${r}, ${g}, ${b})`;
-        } catch (e) {
-            return 'rgb(190, 68, 205)';
+        } catch (err) {
+            console.warn('getDominantColor failed (likely CORS):', err.message);
+            return DEFAULT_GLOW;
         }
     };
 
@@ -119,7 +126,6 @@ const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images, cache
         if (cachedColors[currentIndex]) return;
 
         const color = getDominantColor(e.target);
-        setGlowColor(color);
         onColorCalculated(currentIndex, color);
     };
 
@@ -129,10 +135,10 @@ const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images, cache
             <button
                 className="quality-toggle"
                 onClick={(e) => { e.stopPropagation(); toggleQuality(); }}
-                disabled={isOriginal && !highResLoaded}
+                disabled={isOriginal && !isHighResReady}
             >
                 {isOriginal
-                    ? (highResLoaded ? 'View Compressed' : 'Loading Original...')
+                    ? (isHighResReady ? 'View Compressed' : 'Loading Original...')
                     : 'View Original Quality'}
             </button>
             <button className="lightbox-nav lightbox-prev" onClick={(e) => { e.stopPropagation(); onPrev(); }} aria-label="Previous image">‹</button>
@@ -151,7 +157,9 @@ const Lightbox = ({ isOpen, currentIndex, onClose, onNext, onPrev, images, cache
                         backgroundImage: `url(${currentImage.webp})`,
                         backgroundSize: 'contain',
                         backgroundRepeat: 'no-repeat',
-                        backgroundPosition: 'center'
+                        backgroundPosition: 'center',
+                        // Apply dominant color as glow
+                        boxShadow: `0 0 60px ${glowColor}44, 0 0 120px ${glowColor}22`
                     }}
                 />
             </div>

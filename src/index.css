@@ -1,13 +1,3 @@
-/* Critical CSS */
-body {
-    background: #05000a;
-    color: #e0d0ff;
-    margin: 0;
-}
-
-h1 {
-    color: #be44cd;
-}
 
 
 
@@ -341,6 +331,39 @@ iframe {
     border-radius: 16px;
 }
 
+/* Lite YouTube Embed */
+.lite-yt-btn {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    background-size: cover;
+    background-position: center;
+    background-color: #000;
+    position: relative;
+}
+
+.lite-yt-play {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.3);
+    transition: background 0.3s ease;
+}
+
+.lite-yt-btn:hover .lite-yt-play {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.lite-yt-btn:hover .lite-yt-play svg path:first-child {
+    fill: #f00;
+    fill-opacity: 1;
+}
+
 /* Thumbnail Cards with Enhanced Loading */
 .thumb-card {
     border-radius: 16px;
@@ -496,7 +519,6 @@ iframe {
     position: absolute;
     top: 20px;
     left: 50%;
-    transform: translateX(-50%);
     background: rgba(190, 68, 205, 0.3);
     border: 1px solid var(--accent);
     color: #fff;
@@ -554,7 +576,6 @@ iframe {
 .lightbox-nav {
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
     background: rgba(190, 68, 205, 0.3);
     border: none;
     color: #fff;
@@ -570,7 +591,7 @@ iframe {
     padding-bottom: 4px;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    transform: translateZ(0);
+    transform: translateY(-50%) translateZ(0);
     user-select: none;
 }
 
